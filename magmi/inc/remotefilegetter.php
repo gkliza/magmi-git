@@ -286,7 +286,8 @@ class CURL_RemoteFileGetter extends RemoteFileGetter
             $proto=$context['scheme'];
             if ($proto=='http' || $proto=='https') {
                 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-                $ok = ($httpCode < 400);
+                $size = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
+                $ok = ($httpCode < 400 && $size > 0);
                 if (!$ok) {
                     fclose($fp);
                     @unlink($outname);
